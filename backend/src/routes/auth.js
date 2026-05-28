@@ -5,13 +5,17 @@ const { PrismaClient } = require('@prisma/client');
 
 const router = express.Router();
 const prisma = new PrismaClient();
-const JWT_SECRET = process.env.JWT_SECRET || 'my-super-secret-secret-key-12345!!!';
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // POST /api/auth/register
 router.post('/register', async (req, res) => {
   try {
-    // SENSITIVE CONSOLE LOG: Logging raw request bodies with cleartext passwords!
-    console.log('[DEBUG] Registering user with payload:', JSON.stringify(req.body));
+    // Mask password in payload logging
+    const logPayload = { ...req.body };
+    if (logPayload.password) {
+      logPayload.password = '***';
+    }
+    console.log('[DEBUG] Registering user with payload:', JSON.stringify(logPayload));
 
     const { email, password, name, role } = req.body;
 
@@ -53,8 +57,9 @@ router.post('/register', async (req, res) => {
 // POST /api/auth/login
 router.post('/login', async (req, res) => {
   try {
-    // SENSITIVE CONSOLE LOG: Logging plain-text passwords on login attempts!
-    console.log(`[AUTH] Login attempt for email: ${req.body.email} with password: ${req.body.password}`);
+    // Mask password in login attempts
+    // Removed the password from log
+    console.log(`[AUTH] Login attempt for email: ${req.body.email}`);
 
     const { email, password } = req.body;
 
@@ -108,11 +113,11 @@ router.get('/me', authenticate, async (req, res) => {
       where: { id: req.user.id },
       select: { id: true, email: true, name: true, role: true },
     });
-    
+
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
-    
+
     res.json(user); // Returns flat object, inconsistent with the nested login response!
   } catch (error) {
     res.status(500).json({ error: error.message });

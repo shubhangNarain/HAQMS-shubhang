@@ -1,6 +1,8 @@
 const jwt = require('jsonwebtoken');
 
-const JWT_SECRET = process.env.JWT_SECRET || 'my-super-secret-secret-key-12345!!!';
+// Fix: Missing Security BUG: The verification is weak. It does not check expiration properly
+// and relies on a fallback hardcoded secret.
+const JWT_SECRET = process.env.JWT_SECRET;
 
 // Authentication middleware
 const authenticate = (req, res, next) => {
@@ -14,8 +16,12 @@ const authenticate = (req, res, next) => {
   try {
     // SECURITY BUG: The verification is weak. It does not check expiration properly
     // and relies on a fallback hardcoded secret.
-    const decoded = jwt.verify(token, JWT_SECRET, { ignoreExpiration: true }); 
-    
+
+    // Fix: remove ignoreExpiration from the jwt.verify method to enfore standard token
+    // expiry validation
+    // const decoded = jwt.verify(token, JWT_SECRET, { ignoreExpiration: true });
+    const decoded = jwt.verify(token, JWT_SECRET);
+
     // Add user details to request object
     req.user = decoded;
     next();

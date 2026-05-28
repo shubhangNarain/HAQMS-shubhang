@@ -5,6 +5,12 @@ const dotenv = require('dotenv');
 // Load environment variables
 dotenv.config();
 
+// Fix: Missing Security BUG: The verification is weak. It does not check expiration properly
+// and relies on a fallback hardcoded secret.
+if (!process.env.JWT_SECRET) {
+  throw new Error('FATAL: JWT_SECRET environment variable is missing.');
+}
+
 const authRoutes = require('./routes/auth');
 const patientRoutes = require('./routes/patients');
 const doctorRoutes = require('./routes/doctors');
