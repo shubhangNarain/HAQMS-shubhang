@@ -11,43 +11,64 @@ router.get('/doctor-stats', authenticate, async (req, res) => {
   try {
     const start = Date.now();
 
-    // Fetch all doctors first, then process all in parallel — no sequential loop
-    const doctors = await prisma.doctor.findMany();
-
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    const reportData = await Promise.all(
-      doctors.map(async (doc) => {
-        // All 4 queries for this doctor run in parallel
-        const [totalAppointments, completedAppointments, cancelledAppointments, todayQueueSize] = await Promise.all([
-          prisma.appointment.count({ where: { doctorId: doc.id } }),
-          prisma.appointment.count({ where: { doctorId: doc.id, status: 'COMPLETED' } }),
-          prisma.appointment.count({ where: { doctorId: doc.id, status: 'CANCELLED' } }),
-          prisma.queueToken.count({ where: { doctorId: doc.id, createdAt: { gte: today } } }),
-        ]);
+    // Fetch all doctors, and aggregate appointment/queue stats in parallel
+    const [doctors, appointmentStats, queueStats] = await Promise.all([
+      prisma.doctor.findMany(),
+      prisma.appointment.groupBy({
+        by: ['doctorId', 'status'],
+        _count: { id: true },
+      }),
+      prisma.queueToken.groupBy({
+        by: ['doctorId'],
+        where: { createdAt: { gte: today } },
+        _count: { id: true },
+      }),
+    ]);
 
-        // Revenue derived from completedAppointments count — no extra findMany needed
-        const revenue = completedAppointments * doc.consultationFee;
+    // Build lookup maps
+    const appMap = {};
+    appointmentStats.forEach((stat) => {
+      const docId = stat.doctorId;
+      if (!appMap[docId]) {
+        appMap[docId] = { total: 0, completed: 0, cancelled: 0 };
+      }
+      const count = stat._count.id;
+      appMap[docId].total += count;
+      if (stat.status === 'COMPLETED') {
+        appMap[docId].completed = count;
+      } else if (stat.status === 'CANCELLED') {
+        appMap[docId].cancelled = count;
+      }
+    });
 
-        return {
-          id: doc.id,
-          name: doc.name,
-          specialization: doc.specialization,
-          department: doc.department,
-          totalAppointments,
-          completedAppointments,
-          cancelledAppointments,
-          todayQueueSize,
-          revenue,
-        };
-      })
-    );
+    const queueMap = {};
+    queueStats.forEach((stat) => {
+      queueMap[stat.doctorId] = stat._count.id;
+    });
+
+    // Assemble report data
+    const reportData = doctors.map((doc) => {
+      const stats = appMap[doc.id] || { total: 0, completed: 0, cancelled: 0 };
+      const todayQueueSize = queueMap[doc.id] || 0;
+      const revenue = stats.completed * doc.consultationFee;
+
+      return {
+        id: doc.id,
+        name: doc.name,
+        specialization: doc.specialization,
+        department: doc.department,
+        totalAppointments: stats.total,
+        completedAppointments: stats.completed,
+        cancelledAppointments: stats.cancelled,
+        todayQueueSize,
+        revenue,
+      };
+    });
 
     const durationMs = Date.now() - start;
-    // TESTING:
-    // previous: 451ms
-    // current: 3ms
 
     res.json({
       success: true,
@@ -55,7 +76,8 @@ router.get('/doctor-stats', authenticate, async (req, res) => {
       data: reportData,
     });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to generate report', details: error.message });
+    console.error('Failed to generate report:', error);
+    res.status(500).json({ error: 'Failed to generate report' });
   }
 });
 

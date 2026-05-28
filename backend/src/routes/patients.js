@@ -127,7 +127,11 @@ router.delete('/:id', authenticate, authorizeAdminOnlyLegacy, async (req, res) =
       return res.status(404).json({ error: 'Patient not found' });
     }
 
-    await prisma.patient.delete({ where: { id } });
+    await prisma.$transaction([
+      prisma.queueToken.deleteMany({ where: { patientId: id } }),
+      prisma.appointment.deleteMany({ where: { patientId: id } }),
+      prisma.patient.delete({ where: { id } }),
+    ]);
 
     res.json({ message: `Successfully deleted patient ${patient.name}` });
   } catch (error) {

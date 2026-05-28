@@ -11,6 +11,10 @@ const prisma = new PrismaClient();
 router.get('/', authenticate, async (req, res) => {
   try {
     const { search, specialization } = req.query;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 50;
+    const skip = (page - 1) * limit;
+
     const where = {};
     if (search) {
       where.name = {
@@ -25,11 +29,14 @@ router.get('/', authenticate, async (req, res) => {
 
     const doctors = await prisma.doctor.findMany({
       where,
+      take: limit,
+      skip,
     });
 
     res.json(doctors);
   } catch (error) {
-    res.status(500).json({ error: 'Database execution failure', message: error.message });
+    console.error('Failed to retrieve doctors:', error);
+    res.status(500).json({ error: 'Database execution failure' });
   }
 });
 
@@ -78,7 +85,8 @@ router.get('/stats', authenticate, async (req, res) => {
       }
     });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Failed to retrieve doctor stats:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
@@ -95,7 +103,8 @@ router.get('/:id', authenticate, async (req, res) => {
 
     res.json(doctor);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Failed to retrieve doctor:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 

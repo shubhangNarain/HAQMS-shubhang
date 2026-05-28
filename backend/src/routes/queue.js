@@ -10,13 +10,23 @@ const prisma = new PrismaClient();
 router.get('/', authenticate, async (req, res) => {
   try {
     const { doctorId, status } = req.query;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 100;
+    const skip = (page - 1) * limit;
 
-    const where = {};
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+
+    const where = {
+      createdAt: { gte: today },
+    };
     if (doctorId) where.doctorId = doctorId;
     if (status) where.status = status;
 
     const tokens = await prisma.queueToken.findMany({
       where,
+      take: limit,
+      skip,
       include: {
         patient: true,
         doctor: true,
@@ -26,7 +36,8 @@ router.get('/', authenticate, async (req, res) => {
 
     res.json(tokens);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to retrieve queue', details: error.message });
+    console.error('Failed to retrieve queue:', error);
+    res.status(500).json({ error: 'Failed to retrieve queue' });
   }
 });
 
@@ -78,7 +89,7 @@ router.post('/checkin', authenticate, async (req, res) => {
     });
   } catch (error) {
     console.error('Queue check-in error:', error);
-    res.status(500).json({ error: 'Check-in failed', details: error.message });
+    res.status(500).json({ error: 'Check-in failed' });
   }
 });
 
@@ -104,7 +115,8 @@ router.patch('/:id', authenticate, async (req, res) => {
 
     res.json(updatedToken);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to update queue token', details: error.message });
+    console.error('Failed to update queue token:', error);
+    res.status(500).json({ error: 'Failed to update queue token' });
   }
 });
 

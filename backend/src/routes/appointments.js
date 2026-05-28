@@ -13,6 +13,9 @@ const prisma = new PrismaClient();
 router.get('/', authenticate, async (req, res) => {
   try {
     const { doctorId, status } = req.query;
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 50;
+    const skip = (page - 1) * limit;
 
     const where = {};
     if (doctorId) where.doctorId = doctorId;
@@ -21,26 +24,40 @@ router.get('/', authenticate, async (req, res) => {
     // Single query — patient and doctor loaded via Prisma include (no N+1)
     // TEST RESULT: The [N+1] bug resulted in a response time of 60ms whereas
     // the current implementation of the code above results in a response time of 6ms.
-    const appointments = await prisma.appointment.findMany({
-      where,
-      orderBy: { appointmentDate: 'asc' },
-      include: {
-        patient: {
-          select: { id: true, name: true, phoneNumber: true, age: true, medicalHistory: true },
+    const [appointments, totalAppointments] = await Promise.all([
+      prisma.appointment.findMany({
+        where,
+        orderBy: { appointmentDate: 'asc' },
+        take: limit,
+        skip,
+        include: {
+          patient: {
+            select: { id: true, name: true, phoneNumber: true, age: true, medicalHistory: true },
+          },
+          doctor: {
+            select: { id: true, name: true, specialization: true },
+          },
         },
-        doctor: {
-          select: { id: true, name: true, specialization: true },
-        },
-      },
-    });
+      }),
+      prisma.appointment.count({ where }),
+    ]);
+
+    const totalPages = Math.ceil(totalAppointments / limit);
 
     res.json({
       success: true,
       count: appointments.length,
       appointments,
+      pagination: {
+        page,
+        limit,
+        totalAppointments,
+        totalPages,
+      },
     });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to retrieve appointments', details: error.message });
+    console.error('Failed to retrieve appointments:', error);
+    res.status(500).json({ error: 'Failed to retrieve appointments' });
   }
 });
 
@@ -95,7 +112,8 @@ router.post('/', authenticate, async (req, res) => {
       appointment,
     });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to book appointment', details: error.message });
+    console.error('Failed to book appointment:', error);
+    res.status(500).json({ error: 'Failed to book appointment' });
   }
 });
 
@@ -116,7 +134,8 @@ router.patch('/:id', authenticate, async (req, res) => {
 
     res.json(updated);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to update appointment', details: error.message });
+    console.error('Failed to update appointment:', error);
+    res.status(500).json({ error: 'Failed to update appointment' });
   }
 });
 
