@@ -17,15 +17,8 @@ export default function QueueMonitor() {
 
   const fetchQueueData = useCallback(async () => {
     try {
-      const token = typeof window !== 'undefined' ? localStorage.getItem('haqms_token') : null;
-      const headers = {};
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-
-      // Fix: added headers to check the credentials and get queue from the backend
       const res = await fetch(`${API_BASE_URL}/queue`, {
-        headers,
+        credentials: 'include',
       });
       if (!res.ok) {
         throw new Error('Failed to retrieve active token queue.');

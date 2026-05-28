@@ -66,6 +66,7 @@ router.get('/', authenticate, async (req, res) => {
 // DESIGN BUG: Duplicate-prone schema. No unique index blocks duplicate appointment bookings.
 // In this API, we have a half-hearted verification that is easily bypassed or logically flawed,
 // allowing multiple bookings for the exact same date and doctor.
+// FIXED: Same date multiple booking scenario, not we block them within a 15 min window of existing slot
 router.post('/', authenticate, async (req, res) => {
   try {
     const { patientId, doctorId, appointmentDate, reason } = req.body;
@@ -75,6 +76,39 @@ router.post('/', authenticate, async (req, res) => {
     }
 
     const appDate = new Date(appointmentDate);
+    if (isNaN(appDate.getTime())) {
+      return res.status(400).json({ error: 'Invalid appointment date format.' });
+    }
+
+    if (appDate <= new Date()) {
+      return res.status(400).json({ error: 'Appointment date must be in the future.' });
+    }
+
+    const doctor = await prisma.doctor.findUnique({
+      where: { id: doctorId },
+    });
+
+    if (!doctor) {
+      return res.status(404).json({ error: 'Doctor not found.' });
+    }
+
+    const patient = await prisma.patient.findUnique({
+      where: { id: patientId },
+    });
+
+    if (!patient) {
+      return res.status(404).json({ error: 'Patient not found.' });
+    }
+
+    const appHour = appDate.getHours();
+    const appMin = appDate.getMinutes();
+    const appTimeStr = `${String(appHour).padStart(2, '0')}:${String(appMin).padStart(2, '0')}`;
+
+    if (appTimeStr < doctor.availableFrom || appTimeStr > doctor.availableTo) {
+      return res.status(400).json({
+        error: `Selected slot ${appTimeStr} is outside the doctor's available shift.`,
+      });
+    }
 
     // Block bookings within a 15-minute window of an existing slot (not just exact millisecond match)
     const windowStart = new Date(appDate.getTime() - 15 * 60 * 1000);

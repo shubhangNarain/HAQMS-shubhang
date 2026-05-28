@@ -51,6 +51,25 @@ router.post('/checkin', authenticate, async (req, res) => {
       return res.status(400).json({ error: 'Patient and Doctor ID are required for check-in.' });
     }
 
+    const [doctorExists, patientExists] = await Promise.all([
+      prisma.doctor.findUnique({ where: { id: doctorId } }),
+      prisma.patient.findUnique({ where: { id: patientId } }),
+    ]);
+
+    if (!doctorExists) {
+      return res.status(404).json({ error: 'Doctor not found.' });
+    }
+    if (!patientExists) {
+      return res.status(404).json({ error: 'Patient not found.' });
+    }
+
+    if (appointmentId) {
+      const appointmentExists = await prisma.appointment.findUnique({ where: { id: appointmentId } });
+      if (!appointmentExists) {
+        return res.status(404).json({ error: 'Appointment not found.' });
+      }
+    }
+
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
