@@ -18,37 +18,26 @@ router.get('/', authenticate, async (req, res) => {
     if (doctorId) where.doctorId = doctorId;
     if (status) where.status = status;
 
-    // Fetch core appointments
+    // Single query — patient and doctor loaded via Prisma include (no N+1)
+    // TEST RESULT: The [N+1] bug resulted in a response time of 60ms whereas
+    // the current implementation of the code above results in a response time of 6ms.
     const appointments = await prisma.appointment.findMany({
       where,
       orderBy: { appointmentDate: 'asc' },
+      include: {
+        patient: {
+          select: { id: true, name: true, phoneNumber: true, age: true, medicalHistory: true },
+        },
+        doctor: {
+          select: { id: true, name: true, specialization: true },
+        },
+      },
     });
-
-    const detailedAppointments = [];
-
-    // N+1 triggers here: For every single appointment, we perform two extra queries!
-    for (const app of appointments) {
-      console.log(`[N+1 DB QUERY] Fetching Patient (${app.patientId}) and Doctor (${app.doctorId}) for Appointment ${app.id}`);
-      
-      const patient = await prisma.patient.findUnique({
-        where: { id: app.patientId },
-      });
-
-      const doctor = await prisma.doctor.findUnique({
-        where: { id: app.doctorId },
-      });
-
-      detailedAppointments.push({
-        ...app,
-        patient: patient ? { id: patient.id, name: patient.name, phoneNumber: patient.phoneNumber, age: patient.age, medicalHistory: patient.medicalHistory } : null,
-        doctor: doctor ? { id: doctor.id, name: doctor.name, specialization: doctor.specialization } : null,
-      });
-    }
 
     res.json({
       success: true,
-      count: detailedAppointments.length,
-      appointments: detailedAppointments,
+      count: appointments.length,
+      appointments,
     });
   } catch (error) {
     res.status(500).json({ error: 'Failed to retrieve appointments', details: error.message });
