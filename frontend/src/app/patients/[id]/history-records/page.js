@@ -315,10 +315,10 @@ export default function PatientHistoryPage() {
                                 {/* Status Badge */}
                                 <div className="sm:text-right shrink-0 pl-3 sm:pl-0">
                                   <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-bold border uppercase tracking-wider ${appt.status === 'COMPLETED'
-                                      ? 'bg-teal-500/15 text-teal-600 dark:text-teal-400 border-teal-500/20'
-                                      : appt.status === 'CANCELLED'
-                                        ? 'bg-rose-500/15 text-rose-600 dark:text-rose-400 border-rose-500/20'
-                                        : 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/20'
+                                    ? 'bg-teal-500/15 text-teal-600 dark:text-teal-400 border-teal-500/20'
+                                    : appt.status === 'CANCELLED'
+                                      ? 'bg-rose-500/15 text-rose-600 dark:text-rose-400 border-rose-500/20'
+                                      : 'bg-amber-500/15 text-amber-600 dark:text-amber-400 border-amber-500/20'
                                     }`}>
                                     {appt.status === 'COMPLETED' && <CheckCircle className="h-3 w-3" />}
                                     {appt.status === 'CANCELLED' && <AlertCircle className="h-3 w-3" />}

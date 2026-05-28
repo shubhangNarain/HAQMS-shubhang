@@ -43,6 +43,10 @@ router.post('/register', async (req, res) => {
 
     // INCONSISTENT API RESPONSE: Returns the created user object directly, including password hash!
     // This is a major security flaw.
+    // Stripping the user object of the password before sending it as the response
+    // Major security flaw fix:
+    delete user.password;
+
     res.status(201).json({
       message: 'User registered successfully',
       user,
