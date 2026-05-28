@@ -52,9 +52,9 @@ router.post('/register', async (req, res) => {
       user,
     });
   } catch (error) {
-    // IMPROPER ERROR HANDLING: Leaking database errors and details
+    // IMPROPER ERROR HANDLING FIXED: Leaking database errors and details
     console.error('Registration error:', error);
-    res.status(500).json({ error: 'Server error during registration', databaseError: error.message });
+    res.status(500).json({ error: 'Server error during registration' });
   }
 });
 
@@ -111,7 +111,7 @@ router.post('/login', async (req, res) => {
     });
   } catch (error) {
     console.error('Login error:', error);
-    res.status(500).json({ error: 'Internal Server Error', errorStack: error.stack });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 

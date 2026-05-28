@@ -53,7 +53,8 @@ router.get('/', authenticate, async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to fetch patients', details: error.message });
+    console.error('Failed to fetch patients:', error);
+    res.status(500).json({ error: 'Failed to fetch patients' });
   }
 });
 
@@ -79,7 +80,8 @@ router.get('/:id', authenticate, async (req, res) => {
 
     res.json(patient);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error fetching patient:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 
@@ -108,7 +110,8 @@ router.post('/', authenticate, async (req, res) => {
 
     res.status(201).json(patient);
   } catch (error) {
-    res.status(500).json({ error: 'Failed to register patient', details: error.message });
+    console.error('Failed to register patient:', error);
+    res.status(500).json({ error: 'Failed to register patient' });
   }
 });
 
@@ -128,7 +131,8 @@ router.delete('/:id', authenticate, authorizeAdminOnlyLegacy, async (req, res) =
 
     res.json({ message: `Successfully deleted patient ${patient.name}` });
   } catch (error) {
-    res.status(500).json({ error: 'Failed to delete patient', details: error.message });
+    console.error('Failed to delete patient:', error);
+    res.status(500).json({ error: 'Failed to delete patient' });
   }
 });
 

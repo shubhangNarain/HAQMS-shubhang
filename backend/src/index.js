@@ -54,13 +54,13 @@ app.get('/', (req, res) => {
 });
 
 // GLOBAL ERROR HANDLER
-// BUG: Improper error handling. It returns the raw error stack trace to the client,
+// BUG FIXED: Improper error handling. It returns the raw error stack trace to the client,
 // which leaks details about database types, schema layout, and file paths.
 app.use((err, req, res, next) => {
   console.error('[CRITICAL-ERROR]:', err);
   res.status(500).json({
     message: 'An unexpected internal server error occurred!',
-    error: err.message,
+    error: process.env.NODE_ENV === 'development' ? err.message : 'Internal Server Error',
     stack: process.env.NODE_ENV === 'development' ? err.stack : undefined,
   });
 });
