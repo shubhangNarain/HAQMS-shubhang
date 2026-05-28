@@ -12,7 +12,12 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const router = useRouter();
 
-  const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || 'http://localhost:5000/api';
+  let API_BASE_URL = 'http://localhost:5000/api';
+  if (process.env.NEXT_PUBLIC_API_BASE_URL) {
+    API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL;
+  } else if (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+    API_BASE_URL = 'https://haqms-shubhang.onrender.com/api';
+  }
 
   useEffect(() => {
     const verifySession = async () => {
