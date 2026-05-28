@@ -21,7 +21,7 @@ export default function Navbar() {
           {user && (
             <Link
               href="/dashboard"
-              className="flex items-center gap-1.5 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+              className="flex items-center gap-1.5 text-sm font-semibold text-slate-600 dark:text-slate-700 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
             >
               <LayoutDashboard className="h-4 w-4" />
               Dashboard
@@ -29,7 +29,7 @@ export default function Navbar() {
           )}
           <Link
             href="/queue"
-            className="flex items-center gap-1.5 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+            className="flex items-center gap-1.5 text-sm font-semibold text-slate-600 dark:text-slate-700 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
           >
             <MonitorPlay className="h-4 w-4" />
             Live Queue
@@ -41,7 +41,7 @@ export default function Navbar() {
           {user ? (
             <>
               <div className="hidden sm:flex flex-col items-end">
-                <span className="text-sm font-bold text-slate-800 dark:text-slate-100">{user.name}</span>
+                <span className="text-sm font-bold text-slate-800 dark:text-slate-800">{user.name}</span>
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xxs font-extrabold tracking-wide uppercase bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-500/20">
                   <Shield className="h-3 w-3" />
                   {user.role}

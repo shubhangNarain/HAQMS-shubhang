@@ -15,7 +15,7 @@ export default function Home() {
         <h1 className="text-4xl sm:text-6xl font-extrabold tracking-tight bg-gradient-to-r from-teal-600 to-emerald-500 bg-clip-text text-transparent">
           HAQMS
         </h1>
-        <p className="text-xl sm:text-2xl font-bold mt-2 text-slate-700 dark:text-slate-200">
+        <p className="text-xl sm:text-2xl font-bold mt-2 text-slate-700 dark:text-slate-700">
           Hospital Appointment & Queue Management System
         </p>
         
@@ -32,7 +32,7 @@ export default function Home() {
               <div className="p-3 bg-teal-500/10 text-teal-600 dark:text-teal-400 rounded-xl w-fit group-hover:bg-teal-500 group-hover:text-white transition-colors duration-300">
                 <Users className="h-6 w-6" />
               </div>
-              <h2 className="mt-6 text-xl font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+              <h2 className="mt-6 text-xl font-bold text-slate-800 dark:text-slate-800 flex items-center gap-2">
                 Staff Portal
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </h2>
@@ -48,7 +48,7 @@ export default function Home() {
               <div className="p-3 bg-teal-500/10 text-teal-600 dark:text-teal-400 rounded-xl w-fit group-hover:bg-teal-500 group-hover:text-white transition-colors duration-300">
                 <MonitorPlay className="h-6 w-6" />
               </div>
-              <h2 className="mt-6 text-xl font-bold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+              <h2 className="mt-6 text-xl font-bold text-slate-800 dark:text-slate-800 flex items-center gap-2">
                 Live Public Monitor
                 <ArrowRight className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </h2>
@@ -65,7 +65,7 @@ export default function Home() {
             <ShieldAlert className="h-6 w-6" />
           </div>
           <div>
-            <h3 className="font-bold text-slate-800 dark:text-slate-100">Assessment Environment Notice</h3>
+            <h3 className="font-bold text-slate-800 dark:text-slate-800">Assessment Environment Notice</h3>
             <p className="mt-1 text-slate-500 dark:text-slate-400 text-sm">
               This repository contains critical architectural, database performance, frontend memory, and security bugs. 
               Your evaluation criteria will measure your ability to identify, trace, profile, and fix these issues systematically.

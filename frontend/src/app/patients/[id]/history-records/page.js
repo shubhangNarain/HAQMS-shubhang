@@ -95,7 +95,7 @@ export default function PatientHistoryPage() {
         ) : error ? (
           <div className="glass p-8 rounded-2xl border border-rose-500/20 bg-rose-500/10 text-center max-w-xl mx-auto shadow-lg">
             <ShieldAlert className="h-12 w-12 text-rose-500 mx-auto mb-4" />
-            <h3 className="text-lg font-bold text-slate-800 dark:text-slate-100">Failed to Load Reports</h3>
+            <h3 className="text-lg font-bold text-slate-800 dark:text-slate-800">Failed to Load Reports</h3>
             <p className="mt-2 text-slate-500 dark:text-slate-400 text-sm">{error}</p>
             <Link
               href="/dashboard"
@@ -117,7 +117,7 @@ export default function PatientHistoryPage() {
                 </div>
                 <div>
                   <div className="flex items-center gap-3">
-                    <h1 className="text-2xl font-extrabold text-slate-800 dark:text-slate-100">
+                    <h1 className="text-2xl font-extrabold text-slate-800 dark:text-slate-800">
                       {patient.name}
                     </h1>
                     <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-500/20 uppercase">
@@ -147,7 +147,7 @@ export default function PatientHistoryPage() {
                   <Phone className="h-4 w-4 text-teal-600 dark:text-teal-400 shrink-0" />
                   <div>
                     <span className="block text-slate-400 font-bold uppercase tracking-wider text-xxs">Phone Number</span>
-                    <span className="font-bold text-slate-700 dark:text-slate-300">{patient.phoneNumber}</span>
+                    <span className="font-bold text-slate-700 dark:text-slate-700">{patient.phoneNumber}</span>
                   </div>
                 </div>
 
@@ -155,7 +155,7 @@ export default function PatientHistoryPage() {
                   <Mail className="h-4 w-4 text-teal-600 dark:text-teal-400 shrink-0" />
                   <div>
                     <span className="block text-slate-400 font-bold uppercase tracking-wider text-xxs">Email Address</span>
-                    <span className="font-bold text-slate-700 dark:text-slate-300">{patient.email || 'N/A'}</span>
+                    <span className="font-bold text-slate-700 dark:text-slate-700">{patient.email || 'N/A'}</span>
                   </div>
                 </div>
               </div>
@@ -171,12 +171,12 @@ export default function PatientHistoryPage() {
                 <div className="glass rounded-2xl shadow-lg border border-slate-200 dark:border-slate-800 overflow-hidden flex flex-col hover:border-teal-500/30 transition-all duration-300">
                   <div className="bg-slate-500/5 p-5 border-b border-slate-200 dark:border-slate-800 flex items-center gap-2.5">
                     <HeartPulse className="h-5 w-5 text-teal-600 dark:text-teal-400" />
-                    <h3 className="font-extrabold text-base text-slate-800 dark:text-slate-100">Clinical Background</h3>
+                    <h3 className="font-extrabold text-base text-slate-800 dark:text-slate-800">Clinical Background</h3>
                   </div>
                   <div className="p-6">
                     <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200 dark:border-slate-800 text-xs">
                       <h4 className="font-extrabold text-slate-400 uppercase tracking-wider mb-2">Registered Anamnesis</h4>
-                      <p className="text-slate-700 dark:text-slate-300 leading-6 text-sm font-semibold whitespace-pre-line">
+                      <p className="text-slate-700 dark:text-slate-700 leading-6 text-sm font-semibold whitespace-pre-line">
                         {patient.medicalHistory?.toUpperCase() || 'NO CLINICAL MEDICAL HISTORY RECORDED'}
                       </p>
                     </div>
@@ -188,7 +188,7 @@ export default function PatientHistoryPage() {
                   <div className="bg-slate-500/5 p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
                       <FileText className="h-5 w-5 text-teal-600 dark:text-teal-400" />
-                      <h3 className="font-extrabold text-base text-slate-800 dark:text-slate-100">Legacy Reports</h3>
+                      <h3 className="font-extrabold text-base text-slate-800 dark:text-slate-800">Legacy Reports</h3>
                     </div>
                     <span className="px-2 py-0.5 rounded text-xxs font-extrabold bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-500/20 uppercase">
                       4 Files
@@ -206,7 +206,7 @@ export default function PatientHistoryPage() {
                             <FileSpreadsheet className="h-4 w-4" />
                           </div>
                           <div>
-                            <span className="block text-sm font-bold text-slate-700 dark:text-slate-200 line-clamp-1 group-hover/item:text-teal-600 dark:group-hover/item:text-teal-400 transition-colors">
+                            <span className="block text-sm font-bold text-slate-700 dark:text-slate-700 line-clamp-1 group-hover/item:text-teal-600 dark:group-hover/item:text-teal-400 transition-colors">
                               {report.name}
                             </span>
                             <span className="block text-xxs text-slate-400 mt-0.5 font-semibold">
@@ -237,9 +237,9 @@ export default function PatientHistoryPage() {
                   <div className="bg-slate-500/5 p-5 border-b border-slate-200 dark:border-slate-800 flex items-center justify-between">
                     <div className="flex items-center gap-2.5">
                       <ClipboardList className="h-5 w-5 text-teal-600 dark:text-teal-400" />
-                      <h3 className="font-extrabold text-base text-slate-800 dark:text-slate-100">Consultation & Appointment History</h3>
+                      <h3 className="font-extrabold text-base text-slate-800 dark:text-slate-800">Consultation & Appointment History</h3>
                     </div>
-                    <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-500/10 text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-700">
+                    <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-slate-500/10 text-slate-700 dark:text-slate-700 border border-slate-200 dark:border-slate-700">
                       {patient.appointments.length} Total
                     </span>
                   </div>
@@ -248,7 +248,7 @@ export default function PatientHistoryPage() {
                     {patient.appointments.length === 0 ? (
                       <div className="flex flex-col items-center justify-center py-20 text-center">
                         <Calendar className="h-12 w-12 text-slate-400 mb-4 animate-bounce" />
-                        <h4 className="text-base font-bold text-slate-800 dark:text-slate-100">No Appointments Registered</h4>
+                        <h4 className="text-base font-bold text-slate-800 dark:text-slate-800">No Appointments Registered</h4>
                         <p className="text-slate-500 dark:text-slate-400 text-xs mt-2 max-w-sm">
                           This patient record is currently clean. No past, present, or pending medical appointments have been scheduled.
                         </p>
@@ -291,7 +291,7 @@ export default function PatientHistoryPage() {
                                   </div>
 
                                   <div className="flex items-center gap-2">
-                                    <span className="text-base font-extrabold text-slate-800 dark:text-slate-100">
+                                    <span className="text-base font-extrabold text-slate-800 dark:text-slate-800">
                                       {appt.doctor?.name || `Physician ID: ${appt.doctorId.slice(0, 8)}`}
                                     </span>
                                     {appt.doctor?.specialization && (

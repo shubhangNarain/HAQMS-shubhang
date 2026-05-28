@@ -470,7 +470,7 @@ export default function Dashboard() {
               {/* Directory Section */}
               <div className="lg:col-span-2 space-y-6">
                 <div className="glass p-6 rounded-2xl shadow-md border border-slate-200 dark:border-slate-800">
-                  <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-2 mb-4">
+                  <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-800 flex items-center gap-2 mb-4">
                     <ClipboardList className="h-5 w-5 text-teal-600" />
                     Patient Lookup Directory
                   </h3>
@@ -486,14 +486,14 @@ export default function Dashboard() {
                         value={patientSearch}
                         onChange={(e) => setPatientSearch(e.target.value)}
                         placeholder="Search by name, phone or email..."
-                        className="block w-full pl-9 pr-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
+                        className="block w-full pl-9 pr-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
                       />
                     </div>
 
                     <select
                       value={patientGender}
                       onChange={(e) => setPatientGender(e.target.value)}
-                      className="px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 text-sm focus:outline-none"
+                      className="px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-800 text-sm focus:outline-none"
                     >
                       <option value="All">All Genders</option>
                       <option value="Male">Male</option>
@@ -521,7 +521,7 @@ export default function Dashboard() {
                         <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                           {patients.map((p) => (
                             <tr key={p.id} className="hover:bg-slate-500/5 transition-colors">
-                              <td className="py-3.5 font-bold text-slate-800 dark:text-slate-200">
+                              <td className="py-3.5 font-bold text-slate-800 dark:text-slate-800">
                                 {p.name}
                                 {p.email && <span className="block text-xxs text-slate-400 font-normal mt-0.5">{p.email}</span>}
                               </td>
@@ -590,7 +590,7 @@ export default function Dashboard() {
 
               {/* Registration Form */}
               <div className="glass p-6 rounded-2xl shadow-md border border-slate-200 dark:border-slate-800 h-fit">
-                <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-2 mb-4">
+                <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-800 flex items-center gap-2 mb-4">
                   <UserPlus className="h-5 w-5 text-teal-600" />
                   New Registration
                 </h3>
@@ -601,7 +601,7 @@ export default function Dashboard() {
                   </div>
                 )}
 
-                <form onSubmit={handleRegisterPatient} className="space-y-4 text-xs font-semibold text-slate-700 dark:text-slate-300">
+                <form onSubmit={handleRegisterPatient} className="space-y-4 text-xs font-semibold text-slate-700 dark:text-slate-700">
                   <div>
                     <label className="block mb-1">Patient Full Name*</label>
                     <input
@@ -610,7 +610,7 @@ export default function Dashboard() {
                       value={regName}
                       onChange={(e) => setRegName(e.target.value)}
                       placeholder="Bruce Wayne"
-                      className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 text-sm focus:outline-none"
+                      className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-800 text-sm focus:outline-none"
                     />
                   </div>
 
@@ -623,7 +623,7 @@ export default function Dashboard() {
                         value={regAge}
                         onChange={(e) => setRegAge(e.target.value)}
                         placeholder="35"
-                        className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 text-sm focus:outline-none"
+                        className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-800 text-sm focus:outline-none"
                       />
                     </div>
                     <div>
@@ -631,7 +631,7 @@ export default function Dashboard() {
                       <select
                         value={regGender}
                         onChange={(e) => setRegGender(e.target.value)}
-                        className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 text-sm focus:outline-none"
+                        className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-800 text-sm focus:outline-none"
                       >
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
@@ -648,7 +648,7 @@ export default function Dashboard() {
                       value={regPhone}
                       onChange={(e) => setRegPhone(e.target.value)}
                       placeholder="555-0199 (Unchecked format)"
-                      className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 text-sm focus:outline-none"
+                      className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-800 text-sm focus:outline-none"
                     />
                   </div>
 
@@ -659,7 +659,7 @@ export default function Dashboard() {
                       value={regEmail}
                       onChange={(e) => setRegEmail(e.target.value)}
                       placeholder="bruce@wayne.com"
-                      className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 text-sm focus:outline-none"
+                      className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-800 text-sm focus:outline-none"
                     />
                   </div>
 
@@ -670,7 +670,7 @@ export default function Dashboard() {
                       onChange={(e) => setRegHistory(e.target.value)}
                       placeholder="E.g. cardiovascular risks, asthma..."
                       rows="3"
-                      className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 text-sm focus:outline-none"
+                      className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-800 text-sm focus:outline-none"
                     ></textarea>
                   </div>
 
@@ -693,7 +693,7 @@ export default function Dashboard() {
           <div className="grid gap-8 lg:grid-cols-2">
             {/* Book Appointment Card */}
             <div className="glass p-6 rounded-2xl shadow-md border border-slate-200 dark:border-slate-800">
-              <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-2 mb-4">
+              <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-800 flex items-center gap-2 mb-4">
                 <CalendarDays className="h-5 w-5 text-teal-600" />
                 Schedule Appointment Slot
               </h3>
@@ -704,14 +704,14 @@ export default function Dashboard() {
                 </div>
               )}
 
-              <form onSubmit={handleBookAppointment} className="space-y-4 text-xs font-semibold text-slate-700 dark:text-slate-300">
+              <form onSubmit={handleBookAppointment} className="space-y-4 text-xs font-semibold text-slate-700 dark:text-slate-700">
                 <div>
                   <label className="block mb-1">Select Registered Patient*</label>
                   <select
                     required
                     value={bookingPatientId}
                     onChange={(e) => setBookingPatientId(e.target.value)}
-                    className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 text-sm focus:outline-none"
+                    className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-800 text-sm focus:outline-none"
                   >
                     <option value="">-- Choose Patient --</option>
                     {patients.map(p => (
@@ -727,7 +727,7 @@ export default function Dashboard() {
                     required
                     value={bookingDoctorId}
                     onChange={(e) => setBookingDoctorId(e.target.value)}
-                    className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 text-sm focus:outline-none"
+                    className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-800 text-sm focus:outline-none"
                   >
                     <option value="">-- Choose Physician --</option>
                     {doctorsList.map(d => (
@@ -743,7 +743,7 @@ export default function Dashboard() {
                     required
                     value={bookingDate}
                     onChange={(e) => setBookingDate(e.target.value)}
-                    className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 text-sm focus:outline-none"
+                    className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-800 text-sm focus:outline-none"
                   />
                 </div>
 
@@ -754,7 +754,7 @@ export default function Dashboard() {
                     value={bookingReason}
                     onChange={(e) => setBookingReason(e.target.value)}
                     placeholder="Regular diagnostic review, suture removal..."
-                    className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 text-sm focus:outline-none"
+                    className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-800 text-sm focus:outline-none"
                   />
                 </div>
 
@@ -769,7 +769,7 @@ export default function Dashboard() {
 
             {/* Quick Walkin Checkin Token Board */}
             <div className="glass p-6 rounded-2xl shadow-md border border-slate-200 dark:border-slate-800">
-              <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-2 mb-4">
+              <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-800 flex items-center gap-2 mb-4">
                 <Activity className="h-5 w-5 text-teal-600" />
                 Active Direct Queue Check-In
               </h3>
@@ -778,18 +778,18 @@ export default function Dashboard() {
               </p>
 
               <div className="space-y-6">
-                <div className="p-4 rounded-xl border border-teal-500/25 bg-teal-500/10 text-slate-700 dark:text-slate-300 text-xs leading-5">
+                <div className="p-4 rounded-xl border border-teal-500/25 bg-teal-500/10 text-slate-700 dark:text-slate-700 text-xs leading-5">
                   <strong>Token Generation Engine Note:</strong> Direct arrivals bypass appointments. The token engine automatically fetches the current days maximum token size and increments.
                   <span className="block mt-1 font-bold text-rose-500 uppercase tracking-wide">Warning: Vulnerable to check-in race conditions!</span>
                 </div>
 
-                <div className="space-y-4 text-xs font-semibold text-slate-700 dark:text-slate-300">
+                <div className="space-y-4 text-xs font-semibold text-slate-700 dark:text-slate-700">
                   <div>
                     <label className="block mb-1">Select Walk-in Patient*</label>
                     <select
                       value={walkinPatientId}
                       onChange={(e) => setWalkinPatientId(e.target.value)}
-                      className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 text-sm focus:outline-none"
+                      className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-800 text-sm focus:outline-none"
                     >
                       <option value="">-- Choose Patient --</option>
                       {patients.map(p => (
@@ -803,7 +803,7 @@ export default function Dashboard() {
                     <select
                       value={walkinDoctorId}
                       onChange={(e) => setWalkinDoctorId(e.target.value)}
-                      className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 text-sm focus:outline-none"
+                      className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-800 text-sm focus:outline-none"
                     >
                       <option value="">-- Choose Physician --</option>
                       {doctorsList.map(d => (
@@ -836,7 +836,7 @@ export default function Dashboard() {
         {activeTab === 'appointments' && (
           <div className="space-y-6">
             <div className="glass p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-md">
-              <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-2 mb-4">
+              <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-800 flex items-center gap-2 mb-4">
                 <CalendarDays className="h-5 w-5 text-teal-600" />
                 Scheduled Daily Bookings List
               </h3>
@@ -858,7 +858,7 @@ export default function Dashboard() {
                     <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                       {doctorAppointments.map((app) => (
                         <tr key={app.id} className="hover:bg-slate-500/5 transition-colors">
-                          <td className="py-3.5 font-mono font-bold text-slate-800 dark:text-slate-200">
+                          <td className="py-3.5 font-mono font-bold text-slate-800 dark:text-slate-800">
                             {new Date(app.appointmentDate).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                           </td>
                           <td className="py-3.5">
@@ -892,7 +892,7 @@ export default function Dashboard() {
                                 </button>
                                 <button
                                   onClick={() => handleCompleteAppointment(app.id)}
-                                  className="text-xxs px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-extrabold hover:bg-teal-500 hover:text-white transition-colors"
+                                  className="text-xxs px-2.5 py-1 rounded bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-700 font-extrabold hover:bg-teal-500 hover:text-white transition-colors"
                                 >
                                   Complete
                                 </button>
@@ -912,7 +912,7 @@ export default function Dashboard() {
               <div className="glass p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-md space-y-4">
                 <div className="flex justify-between items-start">
                   <div>
-                    <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-100">
+                    <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-800">
                       Medical Records: {selectedPatientHistory.name}
                     </h3>
                     <p className="text-xxs font-bold text-slate-400 uppercase tracking-widest mt-1">
@@ -934,7 +934,7 @@ export default function Dashboard() {
                       Assuming medicalHistory is always populated. Accesses a method on a nullable property
                       without optional chaining! If medicalHistory is null (which is the case for Batman, Clark Kent, etc.),
                       this code throws: "Cannot read properties of null (reading 'toUpperCase')" and crashes the app! */}
-                  <p className="text-slate-700 dark:text-slate-300 leading-5 text-sm font-semibold">
+                  <p className="text-slate-700 dark:text-slate-700 leading-5 text-sm font-semibold">
                     {selectedPatientHistory.medicalHistory?.toUpperCase() || 'NO HISTORY RECORDED'}
                   </p>
                 </div>
@@ -959,7 +959,7 @@ export default function Dashboard() {
             ============================================================== */}
         {activeTab === 'queue' && (
           <div className="glass p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-md">
-            <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-2 mb-4">
+            <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-800 flex items-center gap-2 mb-4">
               <Clock className="h-5 w-5 text-teal-600" />
               Active Operations Queue Controller
             </h3>
@@ -977,14 +977,14 @@ export default function Dashboard() {
                     className={`p-5 rounded-2xl border shadow-md relative overflow-hidden flex flex-col justify-between ${t.status === 'CALLING' ? 'border-teal-500 bg-teal-500/10' : 'border-slate-200 dark:border-slate-800 bg-slate-500/5'}`}
                   >
                     <div className="flex justify-between items-start">
-                      <span className="text-2xl font-black text-slate-800 dark:text-slate-100">Token #{t.tokenNumber}</span>
+                      <span className="text-2xl font-black text-slate-800 dark:text-slate-800">Token #{t.tokenNumber}</span>
                       <span className={`px-2 py-0.5 rounded text-xxs font-extrabold tracking-wide uppercase ${t.status === 'CALLING' ? 'bg-teal-500 text-white' : t.status === 'COMPLETED' ? 'bg-teal-500/10 text-teal-600' : 'bg-amber-500/10 text-amber-500'}`}>
                         {t.status}
                       </span>
                     </div>
 
                     <div className="mt-4">
-                      <h4 className="text-xs font-bold text-slate-800 dark:text-slate-200">{t.patient.name}</h4>
+                      <h4 className="text-xs font-bold text-slate-800 dark:text-slate-800">{t.patient.name}</h4>
                       <p className="text-xxs text-slate-400 mt-0.5">Contact: {t.patient.phoneNumber}</p>
                     </div>
 
@@ -1029,7 +1029,7 @@ export default function Dashboard() {
             <div className="glass p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-md">
               <div className="flex justify-between items-center mb-6">
                 <div>
-                  <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+                  <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-800 flex items-center gap-2">
                     <TrendingUp className="h-5 w-5 text-teal-600" />
                     Doctor Revenue & Operations Report
                   </h3>
@@ -1063,7 +1063,7 @@ export default function Dashboard() {
               ) : (
                 <div className="space-y-6">
                   {/* Reporting details benchmark */}
-                  <div className="flex items-center gap-3 p-3 bg-amber-500/10 text-slate-700 dark:text-slate-300 text-xs rounded-lg border border-amber-500/20 leading-5">
+                  <div className="flex items-center gap-3 p-3 bg-amber-500/10 text-slate-700 dark:text-slate-700 text-xs rounded-lg border border-amber-500/20 leading-5">
                     <Clock className="h-5 w-5 text-amber-500 shrink-0" />
                     <div>
                       <strong>Performance Diagnostic:</strong> API execution resolved in{' '}
@@ -1076,11 +1076,11 @@ export default function Dashboard() {
                   <div className="grid gap-4 sm:grid-cols-3">
                     <div className="p-4 bg-slate-500/5 border border-slate-200 dark:border-slate-800 rounded-xl">
                       <span className="text-xxs uppercase tracking-wider text-slate-400 font-bold">Total Physicians</span>
-                      <h4 className="text-2xl font-black text-slate-800 dark:text-slate-100 mt-1">{adminReportData.data.length}</h4>
+                      <h4 className="text-2xl font-black text-slate-800 dark:text-slate-800 mt-1">{adminReportData.data.length}</h4>
                     </div>
                     <div className="p-4 bg-slate-500/5 border border-slate-200 dark:border-slate-800 rounded-xl">
                       <span className="text-xxs uppercase tracking-wider text-slate-400 font-bold">Sum appointments</span>
-                      <h4 className="text-2xl font-black text-slate-800 dark:text-slate-100 mt-1">
+                      <h4 className="text-2xl font-black text-slate-800 dark:text-slate-800 mt-1">
                         {adminReportData.data.reduce((sum, item) => sum + item.totalAppointments, 0)}
                       </h4>
                     </div>
@@ -1107,7 +1107,7 @@ export default function Dashboard() {
                       <tbody className="divide-y divide-slate-100 dark:divide-slate-800">
                         {adminReportData.data.map((item) => (
                           <tr key={item.id} className="hover:bg-slate-500/5 transition-colors">
-                            <td className="py-3.5 font-bold text-slate-800 dark:text-slate-200">
+                            <td className="py-3.5 font-bold text-slate-800 dark:text-slate-800">
                               {item.name}
                               <span className="block text-xxs text-teal-600 dark:text-teal-400 font-semibold uppercase mt-0.5">{item.specialization}</span>
                             </td>
@@ -1115,7 +1115,7 @@ export default function Dashboard() {
                             <td className="py-3.5 text-center text-slate-500 dark:text-slate-400">
                               {item.completedAppointments} Completed / {item.totalAppointments} Total
                             </td>
-                            <td className="py-3.5 text-center font-bold text-slate-800 dark:text-slate-200">{item.todayQueueSize} in queue</td>
+                            <td className="py-3.5 text-center font-bold text-slate-800 dark:text-slate-800">{item.todayQueueSize} in queue</td>
                             <td className="py-3.5 text-right font-bold text-teal-600 dark:text-teal-400">${item.revenue}</td>
                           </tr>
                         ))}
@@ -1134,7 +1134,7 @@ export default function Dashboard() {
         {activeTab === 'physicians' && (
           <div className="glass p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-md space-y-6">
             <div>
-              <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+              <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-800 flex items-center gap-2">
                 <Award className="h-5 w-5 text-teal-600" />
                 Staff Physicians Registry Lookup
               </h3>
@@ -1153,7 +1153,7 @@ export default function Dashboard() {
                   value={adminSearchQuery}
                   onChange={(e) => setAdminSearchQuery(e.target.value)}
                   placeholder="Enter physician name search criteria (raw syntax supported)..."
-                  className="block w-full pl-9 pr-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
+                  className="block w-full pl-9 pr-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent text-sm"
                 />
               </div>
 
@@ -1203,7 +1203,7 @@ export default function Dashboard() {
         {checkinPatient && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
             <div className="glass max-w-md w-full p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl relative animate-in zoom-in duration-200 text-left">
-              <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-100 mb-2">
+              <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-800 mb-2">
                 Select Practitioner
               </h3>
               <p className="text-xs text-slate-400 dark:text-slate-400 font-semibold mb-4">
@@ -1215,7 +1215,7 @@ export default function Dashboard() {
                 <select
                   value={modalCheckinDoctorId}
                   onChange={(e) => setModalCheckinDoctorId(e.target.value)}
-                  className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 text-sm focus:outline-none"
+                  className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-800 text-sm focus:outline-none"
                 >
                   <option value="">-- Choose Physician --</option>
                   {doctorsList.map(d => (

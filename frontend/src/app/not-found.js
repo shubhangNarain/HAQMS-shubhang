@@ -17,8 +17,8 @@ export default function NotFound() {
             <ShieldAlert className="h-10 w-10 animate-bounce" />
           </div>
           
-          <h2 className="text-4xl font-black text-slate-800 dark:text-slate-100">404</h2>
-          <h3 className="mt-2 text-xl font-bold text-slate-800 dark:text-slate-100">
+          <h2 className="text-4xl font-black text-slate-800 dark:text-slate-800">404</h2>
+          <h3 className="mt-2 text-xl font-bold text-slate-800 dark:text-slate-800">
             Page Not Found / Incomplete
           </h3>
           

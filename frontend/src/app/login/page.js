@@ -49,7 +49,7 @@ export default function Login() {
           <Activity className="h-8 w-8 animate-pulse" />
           HAQMS
         </Link>
-        <h2 className="mt-6 text-3xl font-extrabold text-slate-800 dark:text-slate-100">
+        <h2 className="mt-6 text-3xl font-extrabold text-slate-800 dark:text-slate-800">
           Sign in to your account
         </h2>
         <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
@@ -68,7 +68,7 @@ export default function Login() {
             )}
 
             <div>
-              <label htmlFor="email" className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
+              <label htmlFor="email" className="block text-sm font-semibold text-slate-700 dark:text-slate-700">
                 Email Address
               </label>
               <div className="mt-1 relative rounded-lg shadow-sm">
@@ -81,14 +81,14 @@ export default function Login() {
                   type="text" // Inconsistent: using text instead of email type to disable native validations
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="block w-full pl-10 pr-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all text-sm"
+                  className="block w-full pl-10 pr-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all text-sm"
                   placeholder="admin@haqms.com"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-semibold text-slate-700 dark:text-slate-300">
+              <label htmlFor="password" className="block text-sm font-semibold text-slate-700 dark:text-slate-700">
                 Password
               </label>
               <div className="mt-1 relative rounded-lg shadow-sm">
@@ -101,7 +101,7 @@ export default function Login() {
                   type={showPassword ? 'text' : 'password'}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="block w-full pl-10 pr-10 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all text-sm"
+                  className="block w-full pl-10 pr-10 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-800 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all text-sm"
                   placeholder="••••••••"
                 />
                 <button
@@ -132,21 +132,21 @@ export default function Login() {
               <button
                 type="button"
                 onClick={() => { setEmail('admin@haqms.com'); setPassword('password123'); }}
-                className="text-left p-2 rounded bg-slate-100 dark:bg-slate-800 hover:bg-teal-500/10 hover:text-teal-600 dark:hover:text-teal-400 transition-colors text-slate-600 dark:text-slate-300"
+                className="text-left p-2 rounded bg-slate-100 dark:bg-slate-800 hover:bg-teal-500/10 hover:text-teal-600 dark:hover:text-teal-400 transition-colors text-slate-600 dark:text-slate-700"
               >
                 <strong>Admin:</strong> admin@haqms.com
               </button>
               <button
                 type="button"
                 onClick={() => { setEmail('reception1@haqms.com'); setPassword('password123'); }}
-                className="text-left p-2 rounded bg-slate-100 dark:bg-slate-800 hover:bg-teal-500/10 hover:text-teal-600 dark:hover:text-teal-400 transition-colors text-slate-600 dark:text-slate-300"
+                className="text-left p-2 rounded bg-slate-100 dark:bg-slate-800 hover:bg-teal-500/10 hover:text-teal-600 dark:hover:text-teal-400 transition-colors text-slate-600 dark:text-slate-700"
               >
                 <strong>Receptionist:</strong> reception1@haqms.com
               </button>
               <button
                 type="button"
                 onClick={() => { setEmail('doctor1@haqms.com'); setPassword('password123'); }}
-                className="text-left p-2 rounded bg-slate-100 dark:bg-slate-800 hover:bg-teal-500/10 hover:text-teal-600 dark:hover:text-teal-400 transition-colors text-slate-600 dark:text-slate-300"
+                className="text-left p-2 rounded bg-slate-100 dark:bg-slate-800 hover:bg-teal-500/10 hover:text-teal-600 dark:hover:text-teal-400 transition-colors text-slate-600 dark:text-slate-700"
               >
                 <strong>Doctor:</strong> doctor1@haqms.com
               </button>

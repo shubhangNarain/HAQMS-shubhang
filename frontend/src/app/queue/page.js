@@ -90,7 +90,7 @@ export default function QueueMonitor() {
               <Monitor className="h-6 w-6" />
             </div>
             <div>
-              <h1 className="text-2xl font-extrabold text-slate-800 dark:text-slate-100 flex items-center gap-2">
+              <h1 className="text-2xl font-extrabold text-slate-800 dark:text-slate-800 flex items-center gap-2">
                 Live Public Monitor Board
               </h1>
               <p className="text-xs text-slate-400 dark:text-slate-400 font-semibold mt-1">
@@ -132,7 +132,7 @@ export default function QueueMonitor() {
         ) : Object.keys(groupedTokens).length === 0 ? (
           <div className="glass p-12 text-center rounded-2xl border border-dashed border-slate-200 dark:border-slate-800">
             <Bell className="h-12 w-12 text-slate-400 mx-auto animate-bounce" />
-            <h3 className="mt-4 text-lg font-bold text-slate-800 dark:text-slate-100">No Active Tokens</h3>
+            <h3 className="mt-4 text-lg font-bold text-slate-800 dark:text-slate-800">No Active Tokens</h3>
             <p className="mt-2 text-slate-500 dark:text-slate-400 text-sm max-w-md mx-auto">
               There are currently no patient check-ins registered for today. Use the receptionist portal in the Staff Dashboard to check-in patients.
             </p>
@@ -147,7 +147,7 @@ export default function QueueMonitor() {
               >
                 {/* Doctor Title Header */}
                 <div className="bg-slate-500/5 p-5 border-b border-slate-200 dark:border-slate-800">
-                  <h3 className="font-extrabold text-lg text-slate-800 dark:text-slate-100">{docInfo.doctorName}</h3>
+                  <h3 className="font-extrabold text-lg text-slate-800 dark:text-slate-800">{docInfo.doctorName}</h3>
                   <p className="text-xs text-teal-600 dark:text-teal-400 font-bold uppercase tracking-wider mt-0.5">
                     {docInfo.specialization}
                   </p>
@@ -193,7 +193,7 @@ export default function QueueMonitor() {
                         {docInfo.waiting.map((token) => (
                           <div
                             key={token.id}
-                            className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-300"
+                            className="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-xs font-bold text-slate-700 dark:text-slate-700"
                             title={`Patient: ${token.patient.name}`}
                           >
                             #{token.tokenNumber}
