@@ -7,8 +7,6 @@ import { Activity, LogOut, LayoutDashboard, MonitorPlay, Shield } from 'lucide-r
 export default function Navbar() {
   const { user, logout } = useAuth();
 
-  if (!user) return null;
-
   return (
     <nav className="glass sticky top-0 z-50 border-b border-slate-200 dark:border-slate-800 px-6 py-4 shadow-sm backdrop-blur-md">
       <div className="max-w-7xl mx-auto flex items-center justify-between">
@@ -20,13 +18,15 @@ export default function Navbar() {
 
         {/* Links */}
         <div className="flex items-center gap-6">
-          <Link
-            href="/dashboard"
-            className="flex items-center gap-1.5 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
-          >
-            <LayoutDashboard className="h-4 w-4" />
-            Dashboard
-          </Link>
+          {user && (
+            <Link
+              href="/dashboard"
+              className="flex items-center gap-1.5 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+            >
+              <LayoutDashboard className="h-4 w-4" />
+              Dashboard
+            </Link>
+          )}
           <Link
             href="/queue"
             className="flex items-center gap-1.5 text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
@@ -38,21 +38,32 @@ export default function Navbar() {
 
         {/* User Info & Actions */}
         <div className="flex items-center gap-4">
-          <div className="hidden sm:flex flex-col items-end">
-            <span className="text-sm font-bold text-slate-800 dark:text-slate-100">{user.name}</span>
-            <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xxs font-extrabold tracking-wide uppercase bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-500/20">
-              <Shield className="h-3 w-3" />
-              {user.role}
-            </span>
-          </div>
+          {user ? (
+            <>
+              <div className="hidden sm:flex flex-col items-end">
+                <span className="text-sm font-bold text-slate-800 dark:text-slate-100">{user.name}</span>
+                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xxs font-extrabold tracking-wide uppercase bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-500/20">
+                  <Shield className="h-3 w-3" />
+                  {user.role}
+                </span>
+              </div>
 
-          <button
-            onClick={logout}
-            className="p-2 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 hover:bg-rose-500 hover:text-white transition-all duration-300 focus:outline-none"
-            title="Log Out"
-          >
-            <LogOut className="h-5 w-5" />
-          </button>
+              <button
+                onClick={logout}
+                className="p-2 rounded-lg bg-rose-500/10 text-rose-600 dark:text-rose-400 hover:bg-rose-500 hover:text-white transition-all duration-300 focus:outline-none"
+                title="Log Out"
+              >
+                <LogOut className="h-5 w-5" />
+              </button>
+            </>
+          ) : (
+            <Link
+              href="/login"
+              className="px-4 py-2 text-sm font-extrabold rounded-lg bg-teal-600 hover:bg-teal-500 text-white dark:bg-teal-500 dark:text-slate-950 dark:hover:bg-teal-400 shadow-md transition-all duration-300"
+            >
+              Staff Login
+            </Link>
+          )}
         </div>
       </div>
     </nav>

@@ -36,6 +36,7 @@ export default function Dashboard() {
   const [debouncedPatientSearch, setDebouncedPatientSearch] = useState('');
   const [patientGender, setPatientGender] = useState('All');
   const [patientsPagination, setPatientsPagination] = useState({ page: 1, totalPages: 1 });
+  const [checkinPatient, setCheckinPatient] = useState(null);
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -53,8 +54,14 @@ export default function Dashboard() {
   const [regHistory, setRegHistory] = useState('');
   const [regMessage, setRegMessage] = useState('');
 
+  // Walk-in and Modal Check-in state variables
+  const [walkinPatientId, setWalkinPatientId] = useState('');
+  const [walkinDoctorId, setWalkinDoctorId] = useState('');
+  const [modalCheckinDoctorId, setModalCheckinDoctorId] = useState('');
+
   // Queue and Appointment Booking
   const [doctorsList, setDoctorsList] = useState([]);
+  const currentDoctor = doctorsList.find(d => d.userId === user?.id);
   const [bookingPatientId, setBookingPatientId] = useState('');
   const [bookingDoctorId, setBookingDoctorId] = useState('');
   const [bookingDate, setBookingDate] = useState('');
@@ -133,10 +140,18 @@ export default function Dashboard() {
     e.preventDefault();
     setRegMessage('');
 
-    // INCONSISTENT VALIDATION: Receptionist form doesn't validate telephone structure on client, 
-    // leading to database pollution (e.g. text telephone values)
+    const phonePattern = /^\+?[0-9\s\-()]{7,15}$/;
     if (!regName || !regPhone || !regAge) {
       setRegMessage('Error: Name, Age and Phone number are required.');
+      return;
+    }
+    const ageVal = parseInt(regAge, 10);
+    if (isNaN(ageVal) || ageVal < 0 || ageVal > 125) {
+      setRegMessage('Error: Age must be a valid number between 0 and 125.');
+      return;
+    }
+    if (!phonePattern.test(regPhone)) {
+      setRegMessage('Error: Please enter a valid phone number format.');
       return;
     }
 
@@ -250,6 +265,9 @@ export default function Dashboard() {
       if (res.ok) {
         setCheckinMessage(`Checked in! Generated Token #${data.token.tokenNumber}`);
         if (user.role === 'DOCTOR') fetchDoctorWorklist();
+        setWalkinPatientId('');
+        setWalkinDoctorId('');
+        setModalCheckinDoctorId('');
       } else {
         setCheckinMessage(`Error check-in: ${data.error}`);
       }
@@ -518,7 +536,10 @@ export default function Dashboard() {
                                 </Link>
 
                                 <button
-                                  onClick={() => handleQueueCheckin(p.id, doctorsList[0]?.id)}
+                                  onClick={() => {
+                                    setCheckinPatient(p);
+                                    setModalCheckinDoctorId('');
+                                  }}
                                   className="text-xxs px-2.5 py-1 rounded bg-teal-500/10 text-teal-600 dark:text-teal-400 font-bold hover:bg-teal-500 hover:text-white transition-colors"
                                 >
                                   Check In
@@ -764,7 +785,8 @@ export default function Dashboard() {
                   <div>
                     <label className="block mb-1">Select Walk-in Patient*</label>
                     <select
-                      id="walkin-patient"
+                      value={walkinPatientId}
+                      onChange={(e) => setWalkinPatientId(e.target.value)}
                       className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 text-sm focus:outline-none"
                     >
                       <option value="">-- Choose Patient --</option>
@@ -777,7 +799,8 @@ export default function Dashboard() {
                   <div>
                     <label className="block mb-1">Assign Physician*</label>
                     <select
-                      id="walkin-doctor"
+                      value={walkinDoctorId}
+                      onChange={(e) => setWalkinDoctorId(e.target.value)}
                       className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 text-sm focus:outline-none"
                     >
                       <option value="">-- Choose Physician --</option>
@@ -789,13 +812,11 @@ export default function Dashboard() {
 
                   <button
                     onClick={() => {
-                      const pId = document.getElementById('walkin-patient').value;
-                      const dId = document.getElementById('walkin-doctor').value;
-                      if (!pId || !dId) {
+                      if (!walkinPatientId || !walkinDoctorId) {
                         alert('Select patient and doctor first');
                         return;
                       }
-                      handleQueueCheckin(pId, dId);
+                      handleQueueCheckin(walkinPatientId, walkinDoctorId);
                     }}
                     className="glow-btn w-full py-2.5 bg-slate-900 hover:bg-slate-800 text-white dark:bg-teal-500 dark:text-slate-950 dark:hover:bg-teal-400 font-extrabold text-sm rounded-lg shadow-md transition-colors duration-300 mt-2"
                   >
@@ -858,10 +879,12 @@ export default function Dashboard() {
                               <>
                                 <button
                                   onClick={() => {
-                                    const matchedDoc = doctorsList.find(d => d.userId === user.id);
-                                    handleQueueCheckin(app.patientId, matchedDoc.id, app.id);
+                                    if (currentDoctor) {
+                                      handleQueueCheckin(app.patientId, currentDoctor.id, app.id);
+                                    }
                                   }}
-                                  className="text-xxs px-2.5 py-1 rounded bg-teal-500/10 text-teal-600 dark:text-teal-400 font-extrabold hover:bg-teal-500 hover:text-white transition-colors"
+                                  disabled={!currentDoctor}
+                                  className="text-xxs px-2.5 py-1 rounded bg-teal-500/10 text-teal-600 dark:text-teal-400 font-extrabold hover:bg-teal-500 hover:text-white transition-colors disabled:opacity-35 disabled:cursor-not-allowed"
                                 >
                                   Check In Patient
                                 </button>
@@ -1171,6 +1194,61 @@ export default function Dashboard() {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        )}
+        {/* Doctor Selection for Check-In Modal */}
+        {checkinPatient && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/40 backdrop-blur-sm p-4 animate-in fade-in duration-200">
+            <div className="glass max-w-md w-full p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xl relative animate-in zoom-in duration-200 text-left">
+              <h3 className="text-lg font-extrabold text-slate-800 dark:text-slate-100 mb-2">
+                Select Practitioner
+              </h3>
+              <p className="text-xs text-slate-400 dark:text-slate-400 font-semibold mb-4">
+                Assign a physician for check-in of patient: <strong className="text-teal-600 dark:text-teal-400">{checkinPatient.name}</strong>
+              </p>
+
+              <div className="space-y-3">
+                <label className="block text-xs font-bold text-slate-400 uppercase tracking-wider">Available Doctors</label>
+                <select
+                  value={modalCheckinDoctorId}
+                  onChange={(e) => setModalCheckinDoctorId(e.target.value)}
+                  className="block w-full px-3 py-2 border border-slate-300 dark:border-slate-700 bg-white/50 dark:bg-slate-900/50 rounded-lg text-slate-900 dark:text-slate-100 text-sm focus:outline-none"
+                >
+                  <option value="">-- Choose Physician --</option>
+                  {doctorsList.map(d => (
+                    <option key={d.id} value={d.id}>
+                      {d.name} ({d.specialization}) - Fee: ${d.consultationFee}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="mt-6 flex justify-end gap-3 text-xs">
+                <button
+                  onClick={() => {
+                    setCheckinPatient(null);
+                    setModalCheckinDoctorId('');
+                  }}
+                  className="px-4 py-2 border border-slate-200 dark:border-slate-800 hover:bg-slate-500/5 text-slate-500 dark:text-slate-400 font-bold rounded-lg transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => {
+                    if (!modalCheckinDoctorId) {
+                      alert('Please select a physician first.');
+                      return;
+                    }
+                    handleQueueCheckin(checkinPatient.id, modalCheckinDoctorId);
+                    setCheckinPatient(null);
+                    setModalCheckinDoctorId('');
+                  }}
+                  className="px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-lg transition-colors shadow-md shadow-teal-500/10"
+                >
+                  Confirm Check-In
+                </button>
+              </div>
             </div>
           </div>
         )}
