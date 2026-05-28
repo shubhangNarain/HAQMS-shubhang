@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import Navbar from '@/components/common/Navbar';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import {
   Users, CalendarDays, Activity, Search, Sparkles, UserPlus,
   Trash2, ClipboardList, TrendingUp, DollarSign, Award, Clock,
@@ -509,6 +510,13 @@ export default function Dashboard() {
                                 {p.age} yrs / <span className="capitalize">{p.gender}</span>
                               </td>
                               <td className="py-3.5 text-right space-x-2">
+                                <Link
+                                  href={`/patients/${p.id}/history-records`}
+                                  className="text-xxs px-2.5 py-1 rounded bg-teal-500/10 text-teal-600 dark:text-teal-400 font-bold hover:bg-teal-500 hover:text-white transition-colors inline-flex items-center"
+                                >
+                                  Reports
+                                </Link>
+
                                 <button
                                   onClick={() => handleQueueCheckin(p.id, doctorsList[0]?.id)}
                                   className="text-xxs px-2.5 py-1 rounded bg-teal-500/10 text-teal-600 dark:text-teal-400 font-bold hover:bg-teal-500 hover:text-white transition-colors"
