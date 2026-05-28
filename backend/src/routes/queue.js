@@ -41,6 +41,27 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Retry helper for Postgres/Prisma serializable transaction failures (SQLSTATE 40001 / P2034)
+async function runWithRetry(fn, maxRetries = 3, delayMs = 100) {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      return await fn();
+    } catch (error) {
+      const isSerializationFailure =
+        error.code === 'P2034' ||
+        error.message?.includes('serialization') ||
+        error.message?.includes('40001');
+
+      if (isSerializationFailure && attempt < maxRetries) {
+        console.warn(`[RETRY] Serialization failure on attempt ${attempt}. Retrying in ${delayMs}ms...`, error.message);
+        await new Promise(resolve => setTimeout(resolve, delayMs));
+        continue;
+      }
+      throw error;
+    }
+  }
+}
+
 // POST /api/queue/checkin
 // Generate a new queue token for a patient
 router.post('/checkin', authenticate, async (req, res) => {
@@ -76,7 +97,7 @@ router.post('/checkin', authenticate, async (req, res) => {
     // Wrap the read + write in a serializable transaction to eliminate the race condition.
     // PostgreSQL will serialize concurrent check-ins for the same doctor, preventing
     // two requests from reading the same max token and writing duplicate token numbers.
-    const newToken = await prisma.$transaction(async (tx) => {
+    const newToken = await runWithRetry(() => prisma.$transaction(async (tx) => {
       const maxTokenResult = await tx.queueToken.aggregate({
         where: {
           doctorId,
@@ -100,7 +121,7 @@ router.post('/checkin', authenticate, async (req, res) => {
           doctor: true,
         },
       });
-    }, { isolationLevel: 'Serializable' });
+    }, { isolationLevel: 'Serializable' }));
 
     res.status(201).json({
       message: 'Checked in successfully. Token generated.',
