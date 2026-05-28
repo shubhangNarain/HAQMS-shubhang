@@ -21,13 +21,7 @@ const reportRoutes = require('./routes/reports');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-const allowedOrigins = ['http://localhost:3000', 'https://haqms-shubhang.vercel.app'];
-if (process.env.FRONTEND_URL) {
-  const cleanUrl = process.env.FRONTEND_URL.replace(/\/$/, '').trim();
-  if (cleanUrl && !allowedOrigins.includes(cleanUrl)) {
-    allowedOrigins.push(cleanUrl);
-  }
-}
+const allowedOrigins = ['http://localhost:3000', 'https://haqms-shubhang.vercel.app']
 
 // Enable CORS for frontend origin and support credentials for HttpOnly cookies
 app.use(cors({
