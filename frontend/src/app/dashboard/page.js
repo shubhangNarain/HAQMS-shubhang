@@ -1187,7 +1187,7 @@ export default function Dashboard() {
                     <span className="inline-flex px-2 py-0.5 rounded text-xxs font-extrabold tracking-wide uppercase bg-teal-500/10 text-teal-600 dark:text-teal-400 mb-2">
                       {doc.department}
                     </span>
-                    <h4 className="font-extrabold text-slate-800 dark:text-slate-100">{doc.name}</h4>
+                    <h4 className="font-extrabold text-slate-800 dark:text-slate-800">{doc.name}</h4>
                     <p className="text-xs text-slate-400 mt-0.5">{doc.specialization}</p>
                   </div>
                   <div className="mt-6 pt-3 border-t border-slate-200 dark:border-slate-800/80 flex justify-between items-center text-xs font-semibold text-slate-500">
