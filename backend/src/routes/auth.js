@@ -85,8 +85,15 @@ router.post('/login', async (req, res) => {
     const token = jwt.sign(
       { id: user.id, email: user.email, role: user.role, name: user.name },
       JWT_SECRET,
-      { expiresIn: '365d' }
+      { expiresIn: '1h' }
     );
+
+    res.cookie('haqms_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 3600 * 1000 // 1 hour
+    });
 
     // INCONSISTENT API RESPONSE format: Returns a nested success payload
     // Different from registration response style
@@ -108,6 +115,16 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// POST /api/auth/logout
+router.post('/logout', (req, res) => {
+  res.clearCookie('haqms_token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict'
+  });
+  res.json({ success: true, message: 'Logged out successfully' });
+});
+
 // GET /api/auth/me
 // Returns current user details based on JWT
 const { authenticate } = require('../middleware/auth');
@@ -122,9 +139,31 @@ router.get('/me', authenticate, async (req, res) => {
       return res.status(404).json({ error: 'User not found' });
     }
 
-    res.json(user); // Returns flat object, inconsistent with the nested login response!
+    let token = null;
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith('Bearer ')) {
+      const headerToken = authHeader.split(' ')[1];
+      if (headerToken && headerToken !== 'null' && headerToken !== 'undefined') {
+        token = headerToken;
+      }
+    }
+    if (!token && req.headers.cookie) {
+      const cookies = req.headers.cookie.split(';').reduce((acc, c) => {
+        const parts = c.trim().split('=');
+        const k = parts[0];
+        const v = parts.slice(1).join('=');
+        if (k && v) acc[k] = v;
+        return acc;
+      }, {});
+      token = cookies['haqms_token'];
+    }
+
+    res.json({
+      user,
+      token,
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: 'Server error retrieving profile' });
   }
 });
 

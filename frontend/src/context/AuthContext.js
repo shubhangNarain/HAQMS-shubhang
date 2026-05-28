@@ -18,20 +18,37 @@ export const AuthProvider = ({ children }) => {
   const API_BASE_URL = 'http://localhost:5000/api';
 
   useEffect(() => {
-    // Check for stored token and user on initialization
-    const storedToken = localStorage.getItem('haqms_token');
-    const storedUser = localStorage.getItem('haqms_user');
-
-    if (storedToken && storedUser) {
+    const verifySession = async () => {
       try {
-        setToken(storedToken);
-        setUser(JSON.parse(storedUser));
+        const response = await fetch(`${API_BASE_URL}/auth/me`, {
+          credentials: 'include',
+        });
+        if (response.ok) {
+          const data = await response.json();
+          setUser(data.user);
+          setToken(data.token);
+          localStorage.setItem('haqms_user', JSON.stringify(data.user));
+        } else {
+          localStorage.removeItem('haqms_user');
+          setUser(null);
+          setToken(null);
+        }
       } catch (e) {
-        console.error('Failed to parse user details from localStorage', e);
-        logout();
+        console.error('Failed to verify session with backend', e);
+        const storedUser = localStorage.getItem('haqms_user');
+        if (storedUser) {
+          try {
+            setUser(JSON.parse(storedUser));
+          } catch (err) {
+            setUser(null);
+          }
+        }
+      } finally {
+        setLoading(false);
       }
-    }
-    setLoading(false);
+    };
+
+    verifySession();
   }, []);
 
   const login = async (email, password) => {
@@ -43,6 +60,7 @@ export const AuthProvider = ({ children }) => {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ email, password }),
       });
 
@@ -56,8 +74,9 @@ export const AuthProvider = ({ children }) => {
       const receivedToken = data.data.token;
       const receivedUser = data.data.user;
 
-      // SECURITY ISSUE: Storing sensitive auth credentials directly in LocalStorage!
-      localStorage.setItem('haqms_token', receivedToken);
+      // SECURITY ISSUE FIXED: Storing sensitive auth credentials directly in LocalStorage!
+      // We only store non-sensitive user metadata here, the token is kept in-memory
+      // and in the HttpOnly cookie.
       localStorage.setItem('haqms_user', JSON.stringify(receivedUser));
 
       setToken(receivedToken);
@@ -83,6 +102,7 @@ export const AuthProvider = ({ children }) => {
         headers: {
           'Content-Type': 'application/json',
         },
+        credentials: 'include',
         body: JSON.stringify({ name, email, password, role }),
       });
 
@@ -104,8 +124,15 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
-    localStorage.removeItem('haqms_token');
+  const logout = async () => {
+    try {
+      await fetch(`${API_BASE_URL}/auth/logout`, {
+        method: 'POST',
+        credentials: 'include',
+      });
+    } catch (e) {
+      console.error('Failed to log out from backend', e);
+    }
     localStorage.removeItem('haqms_user');
     setToken(null);
     setUser(null);

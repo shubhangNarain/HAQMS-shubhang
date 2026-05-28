@@ -6,12 +6,30 @@ const JWT_SECRET = process.env.JWT_SECRET;
 
 // Authentication middleware
 const authenticate = (req, res, next) => {
+  let token = null;
   const authHeader = req.headers.authorization;
-  if (!authHeader || !authHeader.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'Access denied. No token provided.' });
+
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    const headerToken = authHeader.split(' ')[1];
+    if (headerToken && headerToken !== 'null' && headerToken !== 'undefined') {
+      token = headerToken;
+    }
+  }
+  
+  if (!token && req.headers.cookie) {
+    const cookies = req.headers.cookie.split(';').reduce((acc, c) => {
+      const parts = c.trim().split('=');
+      const k = parts[0];
+      const v = parts.slice(1).join('=');
+      if (k && v) acc[k] = v;
+      return acc;
+    }, {});
+    token = cookies['haqms_token'];
   }
 
-  const token = authHeader.split(' ')[1];
+  if (!token) {
+    return res.status(401).json({ error: 'Access denied. No token provided.' });
+  }
 
   try {
     // SECURITY BUG: The verification is weak. It does not check expiration properly
