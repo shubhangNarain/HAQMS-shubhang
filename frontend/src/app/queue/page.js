@@ -17,9 +17,16 @@ export default function QueueMonitor() {
 
   const fetchQueueData = useCallback(async () => {
     try {
-      // Insecure: Fetches queue without checking credentials (it's a public dashboard, which is fine, 
-      // but it uses the hardcoded API domain)
-      const res = await fetch(`${API_BASE_URL}/queue`);
+      const token = typeof window !== 'undefined' ? localStorage.getItem('haqms_token') : null;
+      const headers = {};
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
+      // Fix: added headers to check the credentials and get queue from the backend
+      const res = await fetch(`${API_BASE_URL}/queue`, {
+        headers,
+      });
       if (!res.ok) {
         throw new Error('Failed to retrieve active token queue.');
       }
