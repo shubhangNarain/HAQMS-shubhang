@@ -59,21 +59,24 @@ router.post('/', authenticate, async (req, res) => {
 
     const appDate = new Date(appointmentDate);
 
-    // Flawed duplicate check:
-    // It only checks if the exact millisecond matches. If the candidate books for "2026-05-25 10:00:00"
-    // and another for "2026-05-25 10:00:01", they are treated as unique!
-    // Junior dev logic: "Same time bookings will be blocked."
+    // Block bookings within a 15-minute window of an existing slot (not just exact millisecond match)
+    const windowStart = new Date(appDate.getTime() - 15 * 60 * 1000);
+    const windowEnd = new Date(appDate.getTime() + 15 * 60 * 1000);
+
     const existingBooking = await prisma.appointment.findFirst({
       where: {
         doctorId,
-        appointmentDate: appDate,
         status: { not: 'CANCELLED' },
+        appointmentDate: {
+          gte: windowStart,
+          lte: windowEnd,
+        },
       },
     });
 
     if (existingBooking) {
       return res.status(400).json({
-        error: 'Double booking blocked. Doctor already has an appointment at this exact millisecond.',
+        error: 'Double booking blocked. Doctor already has an appointment within 15 minutes of this slot.',
       });
     }
 
