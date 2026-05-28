@@ -103,6 +103,20 @@ router.post('/', authenticate, async (req, res) => {
       return res.status(400).json({ error: 'Invalid phone number format.' });
     }
 
+    // Check if patient already exists by phone number or email
+    const existingPatient = await prisma.patient.findFirst({
+      where: {
+        OR: [
+          { phoneNumber },
+          ...(email ? [{ email }] : []),
+        ],
+      },
+    });
+
+    if (existingPatient) {
+      return res.status(400).json({ error: 'Patient with this phone number or email already exists.' });
+    }
+
     const patient = await prisma.patient.create({
       data: {
         name,
