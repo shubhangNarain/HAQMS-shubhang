@@ -1,9 +1,8 @@
 const express = require('express');
-const { PrismaClient } = require('@prisma/client');
+const prisma = require('../prisma');
 const { authenticate, authorizeAdminOnlyLegacy } = require('../middleware/auth');
 
 const router = express.Router();
-const prisma = new PrismaClient();
 
 // GET /api/reports/doctor-stats
 // Returns aggregated revenue and appointment stats per doctor
