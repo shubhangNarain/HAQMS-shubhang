@@ -24,6 +24,43 @@ router.post('/register', async (req, res) => {
       return res.status(400).json({ error: 'All fields are required' });
     }
 
+    // Role verification to prevent privilege escalation
+    let finalRole = 'RECEPTIONIST';
+    if (role && role !== 'RECEPTIONIST') {
+      let token = null;
+      const authHeader = req.headers.authorization;
+      if (authHeader && authHeader.startsWith('Bearer ')) {
+        const headerToken = authHeader.split(' ')[1];
+        if (headerToken && headerToken !== 'null' && headerToken !== 'undefined') {
+          token = headerToken;
+        }
+      }
+      if (!token && req.headers.cookie) {
+        const cookies = req.headers.cookie.split(';').reduce((acc, c) => {
+          const parts = c.trim().split('=');
+          const k = parts[0];
+          const v = parts.slice(1).join('=');
+          if (k && v) acc[k] = v;
+          return acc;
+        }, {});
+        token = cookies['haqms_token'];
+      }
+
+      if (!token) {
+        return res.status(403).json({ error: 'Forbidden. Only administrators can register roles other than RECEPTIONIST.' });
+      }
+
+      try {
+        const decoded = jwt.verify(token, JWT_SECRET);
+        if (decoded.role !== 'ADMIN') {
+          return res.status(403).json({ error: 'Forbidden. Only administrators can register roles other than RECEPTIONIST.' });
+        }
+        finalRole = role;
+      } catch (err) {
+        return res.status(403).json({ error: 'Forbidden. Invalid token.' });
+      }
+    }
+
     const existingUser = await prisma.user.findUnique({ where: { email } });
     if (existingUser) {
       return res.status(400).json({ error: 'User already exists with this email' });
@@ -37,7 +74,7 @@ router.post('/register', async (req, res) => {
         email,
         password: hashedPassword,
         name,
-        role: role || 'RECEPTIONIST',
+        role: finalRole,
       },
     });
 
